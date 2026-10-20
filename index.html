@@ -82,6 +82,41 @@ button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit
 .chip.more{background:var(--text-muted);}
 @media (min-width:600px){ .cal-day{min-height:88px;padding:7px;} .chip{font-size:10.5px;padding:1px 5px;} }
 
+/* calendario: intestazione */
+.cal-head{margin-bottom:10px;}
+.cal-head .cal-nav{margin:4px 0 10px;}
+.cal-head .today-btn{margin-left:2px;}
+/* PC: mese a tutta pagina */
+body.desk .wrap{max-width:none;padding:12px 24px 24px;}
+body.desk #v-cli, body.desk #v-conto{max-width:900px;margin:0 auto;}
+body.desk #v-schede{max-width:1200px;margin:0 auto;}
+body.desk .cal-head{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+body.desk .cal-head .cal-nav{margin:0;justify-content:flex-start;}
+body.desk .cal-head .month-sum{margin:0;min-width:420px;}
+.cal-grid.mese{grid-template-rows:auto repeat(var(--righe,5), minmax(104px, 1fr));height:calc(100vh - 190px);min-height:620px;gap:6px;}
+.cal-grid.mese .cal-weekday{font-size:11.5px;}
+.cal-grid.mese .cal-day{min-height:0;padding:6px 7px;overflow:hidden;transition:border-color .15s;}
+.cal-grid.mese .cal-day:hover{border-color:var(--accent);}
+.cal-grid.mese .daynum{font-size:13px;}
+.evs{display:flex;flex-direction:column;gap:3px;overflow-y:auto;min-height:0;}
+.ev{border:none;text-align:left;cursor:pointer;font-size:12px;line-height:1.3;padding:3px 6px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  background:color-mix(in srgb, var(--c) 15%, var(--surface-1));border-left:3px solid var(--c);color:var(--text-primary);}
+.ev:hover{background:color-mix(in srgb, var(--c) 26%, var(--surface-1));}
+.ev i{font-style:normal;color:var(--text-muted);font-size:11px;}
+/* telefono: settimana */
+.cal-grid.settimana{display:flex;flex-direction:column;gap:7px;}
+.wday{display:grid;grid-template-columns:46px 1fr 38px;gap:10px;align-items:center;background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:8px 10px;min-height:58px;}
+.wday.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;}
+.wnum{text-align:center;line-height:1.1;}
+.wnum span{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);}
+.wnum b{font-size:21px;}
+.wday.today .wnum b{color:var(--accent);}
+.wlist{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.wev{border:none;text-align:left;cursor:pointer;border-radius:8px;padding:7px 10px;background:color-mix(in srgb, var(--c) 13%, var(--surface-1));border-left:4px solid var(--c);color:var(--text-primary);}
+.wev .wt{display:block;font-weight:650;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.wev .ws{display:block;font-size:12.5px;color:var(--text-secondary);}
+.wvuoto{color:var(--text-muted);font-size:13px;}
+.wadd{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--accent);background:none;color:var(--accent);font-size:22px;line-height:1;cursor:pointer;padding:0;}
 .month-sum{display:flex;gap:8px;margin:12px 0 4px;}
 .month-sum div{flex:1;background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:8px 10px;}
 .month-sum b{display:block;font-size:17px;}
@@ -200,6 +235,79 @@ table.tab{width:100%;border-collapse:collapse;background:var(--surface-1);border
 .loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--page) 70%, transparent);z-index:500;}
 .loading div{width:34px;height:34px;border:3px solid var(--grid);border-top-color:var(--accent);border-radius:50%;animation:sp 0.8s linear infinite;}
 @keyframes sp{to{transform:rotate(360deg)}}
+/* schede e glossario */
+.seg-full{display:flex;width:100%;}
+.seg-full button{flex:1;padding:9px 6px;}
+.sheet.wide{max-width:880px;}
+#ov2{z-index:320;}
+.cerca{width:100%;border:1px solid var(--border);border-radius:10px;padding:9px 12px;background:var(--surface-1);font-size:16px;margin:10px 0 8px;}
+.chips-cat{margin-bottom:6px;}
+.chips-cat button{padding:5px 11px;font-size:13px;}
+.es-gruppo{margin:16px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary);}
+.es-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;}
+@media (max-width:420px){ .es-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+.es-card{position:relative;border:1.5px solid var(--border);background:var(--surface-1);border-radius:12px;padding:0;overflow:hidden;cursor:pointer;text-align:left;display:flex;flex-direction:column;}
+.es-card.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset;}
+.es-img{display:block;aspect-ratio:3/2;background:#fff;overflow:hidden;}
+.es-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.es-ico{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--accent);background:color-mix(in srgb, var(--accent) 8%, var(--surface-1));}
+.es-ico svg{width:46%;height:auto;max-height:80%;}
+.es-nome{display:block;padding:7px 9px 9px;font-size:13px;font-weight:600;line-height:1.25;}
+.es-nome em{font-style:normal;font-size:10.5px;color:var(--accent);border:1px solid var(--accent);border-radius:5px;padding:0 4px;margin-left:2px;}
+.es-check{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:14px;display:none;align-items:center;justify-content:center;}
+.es-card.on .es-check{display:flex;}
+.es-foto{display:grid;gap:6px;margin-bottom:12px;border-radius:12px;overflow:hidden;}
+.es-foto.due{grid-template-columns:1fr 1fr;}
+.es-foto img{width:100%;display:block;border-radius:10px;background:#fff;}
+.es-foto.vuota{display:flex;align-items:center;gap:12px;padding:10px;background:var(--page);font-size:13px;color:var(--text-muted);}
+.es-foto.vuota .es-ico{width:80px;height:60px;border-radius:8px;flex:none;}
+.sc-card .minis{display:flex;gap:4px;margin-top:6px;}
+.mini{width:44px;height:30px;border-radius:5px;overflow:hidden;background:#fff;display:block;}
+.mini img{width:100%;height:100%;object-fit:cover;}
+.mini .es-ico svg{width:60%;}
+.kb{border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:12px;background:var(--page);}
+.kb-h{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;}
+.kb-h h4{margin:0;font-size:15px;}
+.kb-vuoto{font-size:13px;color:var(--text-muted);padding:6px 0;}
+.kit{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--grid);}
+.kit-img{width:64px;height:44px;flex:none;border-radius:7px;overflow:hidden;background:#fff;cursor:pointer;}
+.kit-img img{width:100%;height:100%;object-fit:cover;}
+.kit-main{flex:1;min-width:0;}
+.kit-nome{display:flex;justify-content:space-between;gap:6px;align-items:flex-start;font-size:14px;}
+.kit-az{display:flex;gap:4px;flex:none;}
+.kit-az button{width:30px;height:28px;border:1px solid var(--border);background:var(--surface-1);border-radius:7px;cursor:pointer;font-size:13px;padding:0;}
+.kit-az button:disabled{opacity:.35;}
+.kit-campi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:6px;}
+@media (max-width:520px){ .kit-campi{grid-template-columns:repeat(2,minmax(0,1fr));} }
+.kit-campi label{font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.02em;display:flex;flex-direction:column;gap:2px;}
+.kit-campi input,.kit-note{width:100%;border:1px solid var(--border);border-radius:7px;padding:6px 8px;background:var(--surface-1);font-size:15px;}
+.kit-note{margin-top:6px;font-size:14px;}
+.pk-grid{max-height:58vh;overflow-y:auto;margin:0 -4px;padding:0 4px;}
+.pk-azioni{position:sticky;bottom:-20px;background:var(--surface-1);padding:10px 0 4px;}
+.sv-blocco{margin-bottom:14px;}
+.sv-blocco h4{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);}
+.sv-it{display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--grid);font-size:14px;}
+.sv-img{width:72px;height:48px;flex:none;border-radius:7px;overflow:hidden;background:#fff;}
+.sv-img img{width:100%;height:100%;object-fit:cover;}
+.sv-dati{color:var(--text-secondary);font-size:13px;}
+.wrapbtn{flex-wrap:wrap;}
+.wrapbtn .btn{flex:1 1 40%;}
+#stampa{display:none;}
+@media print {
+  body{background:#fff;padding:0;}
+  body > *:not(#stampa){display:none !important;}
+  #stampa{display:block !important;color:#000;font:12px/1.35 system-ui,sans-serif;}
+  #stampa .st-head{display:flex;gap:12px;align-items:center;border-bottom:2px solid #2a78d6;padding-bottom:8px;margin-bottom:12px;}
+  #stampa .st-head img{width:40px;height:40px;}
+  #stampa h1{font-size:20px;margin:0;} #stampa .st-head p{margin:2px 0 0;color:#555;}
+  #stampa .sv-blocco{break-inside:auto;margin-bottom:10px;}
+  #stampa .sv-blocco h4{color:#2a78d6;font-size:12px;margin:8px 0 4px;break-after:avoid;}
+  #stampa .sv-it{break-inside:avoid;border-bottom:1px solid #ddd;padding:5px 0;}
+  #stampa .sv-img{width:84px;height:56px;border:1px solid #eee;}
+  #stampa .sv-dati{color:#333;} #stampa .hint{color:#666;}
+  #stampa .es-ico{color:#2a78d6;background:#eef4fc;}
+  @page{margin:12mm;}
+}
 .hidden{display:none !important;}
 .authbox{max-width:400px;margin:28px auto 0;background:var(--surface-1);border:1px solid var(--border);border-radius:16px;padding:22px 20px;}
 .authbox h2{font-size:20px;margin-bottom:4px;}
@@ -243,16 +351,16 @@ textarea.incolla{width:100%;min-height:140px;border:1px solid var(--border);bord
 <div class="wrap hidden" id="main">
   <!-- CALENDARIO -->
   <section class="view on" id="v-cal">
-    <div class="cal-nav">
-      <button id="calPrev" aria-label="Mese precedente">‹</button>
-      <div class="month-label" id="calLabel"></div>
-      <button id="calNext" aria-label="Mese successivo">›</button>
+    <div class="cal-head">
+      <div class="cal-nav">
+        <button id="calPrev" aria-label="Precedente">‹</button>
+        <div class="month-label" id="calLabel"></div>
+        <button id="calNext" aria-label="Successivo">›</button>
+        <button class="today-btn linkbtn" id="calToday">Oggi</button>
+      </div>
+      <div class="month-sum" id="monthSum"></div>
     </div>
-    <div style="text-align:center;margin:-6px 0 8px"><button class="today-btn linkbtn" id="calToday">Oggi</button></div>
     <div class="cal-grid" id="calGrid"></div>
-    <div class="month-sum" id="monthSum"></div>
-    <div class="section-h"><h2 id="dayLabel"></h2><button class="btn small" id="dayAdd">+ Segna lezione</button></div>
-    <div class="list" id="dayList"></div>
   </section>
 
   <!-- CLIENTI -->
@@ -260,6 +368,21 @@ textarea.incolla{width:100%;min-height:140px;border:1px solid var(--border);bord
     <div class="section-h" style="margin-top:6px"><h2>Clienti</h2><button class="btn small" id="cliAdd">+ Nuovo cliente</button></div>
     <div class="list" id="cliList"></div>
     <div style="text-align:center;margin-top:12px"><button class="linkbtn" id="cliArch"></button></div>
+  </section>
+
+  <!-- SCHEDE -->
+  <section class="view" id="v-schede">
+    <div class="seg seg-full" id="scSeg" style="margin:6px 0 14px"><button data-t="mie" class="on">Le mie schede</button><button data-t="glo">Glossario esercizi</button></div>
+    <div id="scMie">
+      <div class="section-h" style="margin-top:0"><h2>Schede</h2><button class="btn small" id="scNuova">+ Nuova scheda</button></div>
+      <div class="list" id="scList"></div>
+    </div>
+    <div id="scGlo" class="hidden">
+      <div class="section-h" style="margin-top:0"><h2 id="gloSub">Glossario</h2><button class="btn small ghost" id="gloNuovo">+ Esercizio mio</button></div>
+      <div id="gloFiltri"></div>
+      <div id="gloGrid"></div>
+      <p class="hint" style="margin-top:14px">Foto degli esercizi: <a href="https://github.com/yuhonas/free-exercise-db" target="_blank" rel="noopener">free-exercise-db</a> (pubblico dominio). Puoi sostituirle con le tue.</p>
+    </div>
   </section>
 
   <!-- CONTABILITÀ -->
@@ -281,15 +404,19 @@ textarea.incolla{width:100%;min-height:140px;border:1px solid var(--border);bord
 <nav class="tabbar hidden" id="tabbar">
   <button data-v="cal" class="on"><span class="ic">📅</span>Calendario</button>
   <button data-v="cli"><span class="ic">👥</span>Clienti</button>
+  <button data-v="schede"><span class="ic">📋</span>Schede</button>
   <button data-v="conto"><span class="ic">💶</span>Contabilità</button>
 </nav>
 
 <div class="overlay" id="ov"><div class="sheet" id="sheet"></div></div>
+<div class="overlay" id="ov2"><div class="sheet" id="sheet2"></div></div>
+<div id="stampa" aria-hidden="true"></div>
 <div class="toast" id="toast"></div>
 <div class="loading" id="loading"><div></div></div>
 
 <script src="vendor/supabase.min.js"></script>
 <script src="config.js"></script>
+<script src="esercizi.js"></script>
 <script>
 // ---------- base ----------
 // ?demo nell'indirizzo = anteprima con dati di prova, senza login e senza toccare il database.
@@ -383,56 +510,77 @@ const iniziali = n => n.trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).
 
 // ---------- render ----------
 function render() {
-  renderCal(); renderCli(); renderConto();
+  renderCal(); renderCli(); renderConto(); if (typeof renderSchede === 'function') renderSchede();
   $('foot').innerHTML = DEMO ? 'Anteprima con dati di prova' : 'HomeFitness · ' + esc(UTENTE ? UTENTE.email : '');
 }
 
+// Sul PC (schermo largo) il calendario è mensile a tutta pagina; sul telefono è settimanale.
+const DESK = matchMedia('(min-width: 900px)');
+const lunedi = s => { const d = parse(s); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d; };
+function perGiorno() { const o = {}; S.lezioni.forEach(l => (o[l.d] = o[l.d] || []).push(l)); Object.values(o).forEach(a => a.sort(ordLez)); return o; }
+function spostaCal(n) {
+  if (DESK.matches) calM.setMonth(calM.getMonth() + n);
+  else { const d = parse(selDay); d.setDate(d.getDate() + 7 * n); selDay = iso(d); }
+  renderCal();
+}
+function riepilogo(ls, etichetta) {
+  const cl = new Set(ls.map(l => l.cliente)).size;
+  $('monthSum').innerHTML = '<div><b>' + ls.length + '</b><span>lezioni ' + etichetta + '</span></div><div><b>' + cl +
+    '</b><span>clienti</span></div><div><b>' + eur(ls.reduce((s, l) => s + l.importo, 0)) + '</b><span>maturato</span></div>';
+}
 function renderCal() {
-  const y = calM.getFullYear(), m = calM.getMonth();
+  document.body.classList.toggle('desk', DESK.matches);
+  if (DESK.matches) renderMese(); else renderSettimana();
+}
+
+function renderMese() {
+  const y = calM.getFullYear(), m = calM.getMonth(), nn = numeri(), pg = perGiorno();
   $('calLabel').textContent = MESI[m] + ' ' + y;
+  $('calPrev').setAttribute('aria-label', 'Mese precedente'); $('calNext').setAttribute('aria-label', 'Mese successivo');
   const first = new Date(y, m, 1), start = new Date(first);
   start.setDate(1 - ((first.getDay() + 6) % 7));
-  const perDay = {};
-  S.lezioni.forEach(l => (perDay[l.d] = perDay[l.d] || []).push(l));
-  let h = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'].map(g => '<div class="cal-weekday">' + g + '</div>').join('');
-  const last = new Date(y, m + 1, 0);
-  const end = new Date(last); end.setDate(last.getDate() + (7 - ((last.getDay() + 6) % 7) - 1));
+  const last = new Date(y, m + 1, 0), end = new Date(last);
+  end.setDate(last.getDate() + (7 - ((last.getDay() + 6) % 7) - 1));
+  const settimane = Math.round((end - start) / 864e5 + 1) / 7;
+  let h = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'].map(g => '<div class="cal-weekday">' + g + '</div>').join('');
   for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-    const k = iso(d), ls = (perDay[k] || []).slice().sort(ordLez);
-    const cls = ['cal-day', d.getMonth() !== m ? 'other-month' : '', k === OGGI ? 'today' : '', ls.length ? 'has' : '', k === selDay ? 'sel' : ''].join(' ');
-    const max = 3;
-    const chips = ls.slice(0, ls.length > max ? max - 1 : max).map(l => { const c = cli(l.cliente);
-      return '<span class="chip" style="background:' + esc(c.colore) + '">' + esc(iniziali(c.nome)) + '</span>'; }).join('')
-      + (ls.length > max ? '<span class="chip more">+' + (ls.length - max + 1) + '</span>' : '');
-    h += '<div class="' + cls + '" data-d="' + k + '"><div class="daynum"><span>' + d.getDate() + '</span></div><div class="chips">' + chips + '</div></div>';
+    const k = iso(d), ls = pg[k] || [];
+    const cls = ['cal-day', d.getMonth() !== m ? 'other-month' : '', k === OGGI ? 'today' : '', ls.length ? 'has' : ''].join(' ');
+    h += '<div class="' + cls + '" data-d="' + k + '" title="Segna una lezione il ' + fmtD(k) + '"><div class="daynum"><span>' + d.getDate() + '</span></div><div class="evs">' +
+      ls.map(l => { const c = cli(l.cliente);
+        return '<button class="ev" data-id="' + l.id + '" style="--c:' + esc(c.colore) + '"><b>' + esc(l.ora || '') + '</b> ' + esc(c.nome) + ' <i>n° ' + nn[l.id] + '</i></button>'; }).join('') +
+      '</div></div>';
   }
-  $('calGrid').innerHTML = h;
-  $('calGrid').querySelectorAll('.cal-day').forEach(el => el.onclick = () => {
-    selDay = el.dataset.d;
-    const sd = parse(selDay);
-    if (sd.getMonth() !== calM.getMonth()) { calM = new Date(sd.getFullYear(), sd.getMonth(), 1); }
-    renderCal();
-  });
-  // riepilogo mese
-  const pref = y + '-' + pad(m + 1);
-  const lm = S.lezioni.filter(l => l.d.startsWith(pref));
-  const cl = new Set(lm.map(l => l.cliente)).size;
-  $('monthSum').innerHTML = '<div><b>' + lm.length + '</b><span>lezioni nel mese</span></div><div><b>' + cl +
-    '</b><span>clienti seguiti</span></div><div><b>' + eur(lm.reduce((s, l) => s + l.importo, 0)) + '</b><span>maturato</span></div>';
-  // giorno selezionato
-  const sd = parse(selDay);
-  const gg = GIORNI[sd.getDay()];
-  $('dayLabel').textContent = (selDay === OGGI ? 'Oggi, ' + gg : gg[0].toUpperCase() + gg.slice(1)) + ' ' + sd.getDate() + ' ' + MESI[sd.getMonth()];
-  const nn = numeri();
-  const ls = (perDay[selDay] || []).slice().sort(ordLez);
-  $('dayList').innerHTML = ls.length ? ls.map(l => {
-    const c = cli(l.cliente);
-    return '<div class="card" data-id="' + l.id + '"><div class="bar" style="background:' + esc(c.colore) + '"></div><div class="main">' +
-      '<div class="t"><span>' + esc(c.nome) + '</span><span class="nlez">Lezione n° ' + nn[l.id] + '</span></div>' +
-      '<div class="s">' + (l.ora ? '🕒 ' + esc(l.ora) + ' · ' : '') + eur(l.importo) + (l.allegati.length ? ' · 📎 ' + l.allegati.length : '') + '</div>' +
-      (l.scheda ? '<div class="pre">' + esc(l.scheda) + '</div>' : '') + '</div></div>';
-  }).join('') : '<div class="empty">Nessuna lezione segnata in questo giorno.</div>';
-  $('dayList').querySelectorAll('.card').forEach(el => el.onclick = () => vediLezione(el.dataset.id));
+  const g = $('calGrid');
+  g.className = 'cal-grid mese'; g.style.setProperty('--righe', settimane); g.innerHTML = h;
+  g.querySelectorAll('.cal-day').forEach(el => el.onclick = () => formLezione(null, { d: el.dataset.d }));
+  g.querySelectorAll('.ev').forEach(el => el.onclick = e => { e.stopPropagation(); vediLezione(el.dataset.id); });
+  riepilogo(S.lezioni.filter(l => l.d.startsWith(y + '-' + pad(m + 1))), 'nel mese');
+}
+
+function renderSettimana() {
+  const lun = lunedi(selDay), dom = new Date(lun); dom.setDate(lun.getDate() + 6);
+  const nn = numeri(), pg = perGiorno();
+  $('calLabel').textContent = lun.getDate() + (lun.getMonth() !== dom.getMonth() ? ' ' + MESI[lun.getMonth()].slice(0, 3) : '') + ' – ' + dom.getDate() + ' ' + MESI[dom.getMonth()] + ' ' + dom.getFullYear();
+  $('calPrev').setAttribute('aria-label', 'Settimana precedente'); $('calNext').setAttribute('aria-label', 'Settimana successiva');
+  let h = '', tutte = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(lun); d.setDate(lun.getDate() + i);
+    const k = iso(d), ls = pg[k] || [];
+    tutte = tutte.concat(ls);
+    h += '<div class="wday' + (k === OGGI ? ' today' : '') + (ls.length ? ' has' : '') + '">' +
+      '<div class="wnum"><span>' + GIORNI[d.getDay()].slice(0, 3) + '</span><b>' + d.getDate() + '</b></div><div class="wlist">' +
+      (ls.length ? ls.map(l => { const c = cli(l.cliente);
+        return '<button class="wev" data-id="' + l.id + '" style="--c:' + esc(c.colore) + '"><span class="wt">' + esc(c.nome) + '</span>' +
+          '<span class="ws">' + (l.ora ? esc(l.ora) + ' · ' : '') + 'lezione n° ' + nn[l.id] + (l.scheda_id || l.scheda ? ' · 📋' : '') + '</span></button>'; }).join('')
+        : '<span class="wvuoto">—</span>') +
+      '</div><button class="wadd" data-d="' + k + '" aria-label="Segna lezione ' + fmtD(k) + '">+</button></div>';
+  }
+  const g = $('calGrid');
+  g.className = 'cal-grid settimana'; g.innerHTML = h;
+  g.querySelectorAll('.wev').forEach(el => el.onclick = () => vediLezione(el.dataset.id));
+  g.querySelectorAll('.wadd').forEach(el => el.onclick = () => formLezione(null, { d: el.dataset.d }));
+  riepilogo(tutte, 'in settimana');
 }
 
 function renderCli() {
@@ -496,8 +644,19 @@ function renderConto() {
 }
 
 // ---------- fogli ----------
-function apri(html) { $('sheet').innerHTML = '<button class="x" onclick="chiudi()" aria-label="Chiudi">×</button>' + html; $('ov').classList.add('open'); $('sheet').scrollTop = 0; firma($('sheet')); }
-function chiudi() { $('ov').classList.remove('open'); }
+function apri(html, cls) {
+  const sh = $('sheet');
+  sh.className = 'sheet' + (cls ? ' ' + cls : ''); sh._prima = null;
+  sh.innerHTML = '<button class="x" onclick="chiudi()" aria-label="Chiudi">×</button>' + html;
+  $('ov').classList.add('open'); sh.scrollTop = 0; firma(sh);
+  if (typeof firmaImg === 'function') firmaImg(sh);
+}
+/** Chiude il foglio; se c'è un controllo "uscire senza salvare?" lo chiede prima. */
+function chiudi() {
+  const sh = $('sheet');
+  if (sh._prima && !sh._prima()) return;
+  sh._prima = null; $('ov').classList.remove('open');
+}
 $('ov').addEventListener('click', e => { if (e.target === $('ov')) chiudi(); });
 
 function pickClienti(sel, soloAttivi) {
@@ -538,23 +697,26 @@ function vediLezione(id) {
     '<div class="nbig">Lezione n° ' + n + '</div>' +
     '<div class="s" style="margin-bottom:12px;color:var(--text-secondary)">' + GIORNI[d.getDay()] + ' ' + fmtD(l.d) + (l.ora ? ' · ore ' + esc(l.ora) : '') + ' · ' + eur(l.importo) + '</div>' +
     '<div class="f"><label>Scheda</label></div>' +
+    (l.scheda_id && (S.schede || []).some(x => x.id === l.scheda_id) ? '<button class="btn ghost" id="lSch" style="width:100%;margin-bottom:10px">📋 Apri la scheda «' + esc(S.schede.find(x => x.id === l.scheda_id).nome) + '» con le foto</button>' : '') +
     (l.scheda ? '<div class="scheda-view">' + esc(l.scheda) + '</div>' : '<div class="empty" style="margin-bottom:12px">Nessuna scheda scritta.</div>') +
     (l.allegati.length ? '<div class="f"><label>Allegati</label><div class="files">' + l.allegati.map(a => fileThumb(a, false)).join('') + '</div></div>' : '') +
     (l.note ? '<div class="f"><label>Note</label><div>' + esc(l.note) + '</div></div>' : '') +
     '<div class="actions"><button class="btn ghost" id="lCli">Scheda cliente</button><button class="btn" id="lMod">Modifica</button></div>');
   $('lMod').onclick = () => formLezione(l);
   $('lCli').onclick = () => vediCliente(l.cliente);
+  if ($('lSch')) $('lSch').onclick = () => vediScheda(l.scheda_id, true);
 }
 
 function formLezione(l, preset) {
   const nuovo = !l;
   l = l || { d: (preset && preset.d) || selDay, ora: '', cliente: (preset && preset.cliente) || '', scheda: '', note: '', allegati: [], importo: '' };
-  const st = { cliente: l.cliente, nuovi: [], rimuovi: [] };
+  const st = { cliente: l.cliente, nuovi: [], rimuovi: [], scheda_id: l.scheda_id || null };
   apri('<h3>' + (nuovo ? 'Segna lezione' : 'Modifica lezione') + '</h3>' +
     '<div class="f"><label>Cliente</label>' + pickClienti(l.cliente, true) + '</div>' +
     '<div class="nbig" id="lN"></div>' +
     '<div class="row2"><div class="f"><label>Data</label><input type="date" id="lD" value="' + l.d + '"></div>' +
     '<div class="f"><label>Ora <span class="hint">facoltativa</span></label><input type="time" id="lO" value="' + esc(l.ora) + '"></div></div>' +
+    '<div class="f"><label for="lSel">Scheda dalla sezione Schede</label><select id="lSel"></select></div>' +
     '<div class="f"><label>Scheda svolta <button type="button" class="linkbtn" id="lCopy">↺ Copia ultima scheda</button></label>' +
     '<textarea id="lS" placeholder="Es. Riscaldamento 10\'&#10;Squat 4x8 @ 40kg&#10;Panca 3x10…">' + esc(l.scheda) + '</textarea></div>' +
     '<div class="f"><label>Allega scheda <span class="hint">foto o PDF</span></label><div class="files" id="lF"></div>' +
@@ -562,7 +724,16 @@ function formLezione(l, preset) {
     '<div class="row2"><div class="f"><label>Importo €</label><input type="number" inputmode="decimal" step="0.5" id="lI" value="' + (l.importo === '' ? '' : l.importo) + '"></div>' +
     '<div class="f" style="flex:2"><label>Note</label><input id="lNo" value="' + esc(l.note) + '" placeholder="Es. dolore spalla dx"></div></div>' +
     '<div class="actions">' + (nuovo ? '' : '<button class="btn danger" id="lDel">Elimina</button>') + '<button class="btn" id="lSave">Salva</button></div>');
+  const aggSel = () => {
+    const tutte = (S.schede || []).slice().sort((a, b) => (b.modificata || '').localeCompare(a.modificata || ''));
+    const sue = tutte.filter(x => x.cliente && x.cliente === st.cliente), altre = tutte.filter(x => !(x.cliente && x.cliente === st.cliente));
+    const opt = x => '<option value="' + x.id + '"' + (x.id === st.scheda_id ? ' selected' : '') + '>' + esc(x.nome) + (x.cliente && x.cliente !== st.cliente ? ' (' + esc(cli(x.cliente).nome) + ')' : '') + '</option>';
+    $('lSel').innerHTML = '<option value="">' + (tutte.length ? '— nessuna, scrivo io —' : 'Nessuna scheda salvata') + '</option>' +
+      (sue.length ? '<optgroup label="Di questo cliente">' + sue.map(opt).join('') + '</optgroup>' : '') +
+      (altre.length ? '<optgroup label="' + (sue.length ? 'Altre schede' : 'Schede') + '">' + altre.map(opt).join('') + '</optgroup>' : '');
+  };
   const aggN = () => {
+    aggSel();
     const cid = st.cliente;
     $('lN').classList.toggle('hidden', !cid);
     if (cid) $('lN').textContent = 'Lezione n° ' + numeroNuova(cid, $('lD').value, $('lO').value, l.id);
@@ -579,6 +750,11 @@ function formLezione(l, preset) {
   };
   bindPick('pCli', id => { st.cliente = id; aggN(); });
   $('lD').onchange = aggN; $('lO').onchange = aggN;
+  $('lSel').onchange = () => {
+    st.scheda_id = $('lSel').value || null;
+    const sc = (S.schede || []).find(x => x.id === st.scheda_id);
+    if (sc && (!$('lS').value.trim() || confirm('Sostituire il testo della scheda con «' + sc.nome + '»?'))) $('lS').value = testoScheda(sc);
+  };
   $('lI').oninput = () => $('lI').dataset.touched = '1';
   $('lCopy').onclick = () => {
     if (!st.cliente) return toast('Scegli prima il cliente', true);
@@ -595,13 +771,13 @@ function formLezione(l, preset) {
   };
   aggN(); aggFiles();
   if (!nuovo) $('lDel').onclick = async () => {
-    if (!confirm('Eliminare questa lezione? Anche gli allegati andranno nel cestino di Drive.')) return;
+    if (!confirm('Eliminare questa lezione? Anche le foto allegate verranno eliminate.')) return;
     if (await run('eliminaLezione', [l.id], 'Lezione eliminata')) chiudi();
   };
   $('lSave').onclick = async () => {
     if (!st.cliente) return toast('Scegli il cliente', true);
     if (!$('lD').value) return toast('Scegli la data', true);
-    const dati = { id: l.id, d: $('lD').value, ora: $('lO').value, cliente: st.cliente, importo: $('lI').value, scheda: $('lS').value.trim(), note: $('lNo').value.trim() };
+    const dati = { id: l.id, d: $('lD').value, ora: $('lO').value, cliente: st.cliente, importo: $('lI').value, scheda: $('lS').value.trim(), scheda_id: st.scheda_id, note: $('lNo').value.trim() };
     const ok = await run('salvaLezione', [dati, st.nuovi.map(f => ({ nome: f.nome, tipo: f.tipo, b64: f.b64 })), st.rimuovi], nuovo ? 'Lezione segnata ✓' : 'Lezione aggiornata');
     if (ok) { selDay = dati.d; const sd = parse(selDay); calM = new Date(sd.getFullYear(), sd.getMonth(), 1); renderCal(); chiudi(); }
   };
@@ -729,14 +905,13 @@ function formPagamento(p, cid) {
 document.querySelectorAll('.tabbar button').forEach(b => b.onclick = () => {
   document.querySelectorAll('.tabbar button').forEach(x => x.classList.toggle('on', x === b));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'v-' + b.dataset.v));
-  $('fab').classList.toggle('hidden', b.dataset.v !== 'cal');
   window.scrollTo(0, 0);
 });
-$('calPrev').onclick = () => { calM.setMonth(calM.getMonth() - 1); renderCal(); };
-$('calNext').onclick = () => { calM.setMonth(calM.getMonth() + 1); renderCal(); };
+$('calPrev').onclick = () => spostaCal(-1);
+$('calNext').onclick = () => spostaCal(1);
 $('calToday').onclick = () => { calM = new Date(); calM.setDate(1); selDay = OGGI; renderCal(); };
-$('dayAdd').onclick = () => formLezione(null, { d: selDay });
-$('fab').onclick = () => formLezione(null, { d: selDay });
+$('fab').onclick = () => formLezione(null, { d: OGGI });
+DESK.addEventListener('change', () => renderCal());
 $('cliAdd').onclick = () => formCliente(null);
 $('cliArch').onclick = () => { showArch = !showArch; renderCli(); };
 $('pagAdd').onclick = () => formPagamento(null);
@@ -746,7 +921,7 @@ $('pagAdd').onclick = () => formPagamento(null);
   $('calGrid').addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
   $('calGrid').addEventListener('touchend', e => {
     if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null;
-    if (Math.abs(dx) > 60) { calM.setMonth(calM.getMonth() + (dx < 0 ? 1 : -1)); renderCal(); }
+    if (Math.abs(dx) > 60) spostaCal(dx < 0 ? 1 : -1);
   });
 })();
 
@@ -773,14 +948,16 @@ async function tutte(tab) {
 }
 const num = v => Number(v) || 0;
 const daCli = r => ({ id: r.id, nome: r.nome, tel: r.tel, tariffa: num(r.tariffa) || 15, prec: r.prec || 0, saldoIniz: num(r.saldo_iniz), colore: r.colore, attivo: r.attivo, note: r.note });
-const daLez = r => ({ id: r.id, d: r.d, ora: r.ora, cliente: r.cliente, importo: num(r.importo), scheda: r.scheda, allegati: r.allegati || [], note: r.note, ins: Date.parse(r.ins) || 0 });
+const daLez = r => ({ id: r.id, d: r.d, ora: r.ora, cliente: r.cliente, importo: num(r.importo), scheda: r.scheda, scheda_id: r.scheda_id || null, allegati: r.allegati || [], note: r.note, ins: Date.parse(r.ins) || 0 });
+const daSch = r => ({ id: r.id, nome: r.nome, cliente: r.cliente, note: r.note, blocchi: r.blocchi || {}, modificata: r.modificata });
+const daEs = r => ({ id: r.id, base: r.base, nome: r.nome, sez: r.sez, cat: r.cat, descr: r.descr, foto: r.foto });
 const daPag = r => ({ id: r.id, d: r.d, cliente: r.cliente, importo: num(r.importo), metodo: r.metodo, note: r.note });
 const b64blob = (b64, tipo) => { const s = atob(b64), a = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return new Blob([a], { type: tipo }); };
 
 const DB = {
   async carica() {
-    const [c, l, p] = await Promise.all([tutte('clienti'), tutte('lezioni'), tutte('pagamenti')]);
-    return { clienti: c.map(daCli), lezioni: l.map(daLez), pagamenti: p.map(daPag), tariffaDefault: 15 };
+    const [c, l, p, sc, es] = await Promise.all([tutte('clienti'), tutte('lezioni'), tutte('pagamenti'), tutte('schede'), tutte('esercizi_miei')]);
+    return { clienti: c.map(daCli), lezioni: l.map(daLez), pagamenti: p.map(daPag), schede: sc.map(daSch), esercizi: es.map(daEs), tariffaDefault: 15 };
   },
   async salvaCliente(c) {
     const nome = String(c.nome || '').trim();
@@ -812,7 +989,7 @@ const DB = {
       allegati.push({ id: path, nome: f.nome, tipo: f.tipo, dove: 'storage' });
     }
     const importo = l.importo !== undefined && l.importo !== '' && isFinite(Number(l.importo)) ? Number(l.importo) : c.tariffa;
-    ok(await sb.from('lezioni').upsert({ id, d: l.d, ora: l.ora || '', cliente: l.cliente, importo, scheda: l.scheda || '', allegati, note: l.note || '' }));
+    ok(await sb.from('lezioni').upsert({ id, d: l.d, ora: l.ora || '', cliente: l.cliente, importo, scheda: l.scheda || '', scheda_id: l.scheda_id || null, allegati, note: l.note || '' }));
     if (via.length) await sb.storage.from('schede').remove(via);
     return DB.carica();
   },
@@ -831,6 +1008,32 @@ const DB = {
   },
   async eliminaPagamento(id) {
     ok(await sb.from('pagamenti').delete().eq('id', id));
+    return DB.carica();
+  },
+  async salvaScheda(sc) {
+    ok(await sb.from('schede').upsert({ id: sc.id, nome: sc.nome, cliente: sc.cliente || null, note: sc.note || '', blocchi: sc.blocchi, modificata: new Date().toISOString() }));
+    return DB.carica();
+  },
+  async eliminaScheda(id) {
+    ok(await sb.from('schede').delete().eq('id', id));
+    return DB.carica();
+  },
+  /** e = {id?, base?, nome, sez, cat, descr}; file = foto nuova {tipo, b64}; via = vecchia foto da cancellare */
+  async salvaEsercizio(e, file, via) {
+    const id = e.id || nuovoId(), prima = (S.esercizi || []).find(x => x.id === id);
+    let foto = prima ? prima.foto : null;
+    if (file) {
+      foto = UTENTE.id + '/esercizi/' + id + '-' + Date.now() + '.jpg';
+      ok(await sb.storage.from('schede').upload(foto, b64blob(file.b64, file.tipo), { contentType: file.tipo }));
+    } else if (via) foto = null;
+    ok(await sb.from('esercizi_miei').upsert({ id, base: e.base || null, nome: e.nome, sez: e.sez, cat: e.cat, descr: e.descr || '', foto }));
+    if (via && via !== foto) await sb.storage.from('schede').remove([via]);
+    return DB.carica();
+  },
+  async eliminaEsercizio(id) {
+    const e = (S.esercizi || []).find(x => x.id === id);
+    ok(await sb.from('esercizi_miei').delete().eq('id', id));
+    if (e && e.foto) await sb.storage.from('schede').remove([e.foto]);
     return DB.carica();
   },
   /** Copia i dati dalla vecchia app Google (le schede già caricate restano su Google Drive). Si può ripetere: non crea doppioni. */
@@ -964,7 +1167,6 @@ async function avvia(user) {
   UTENTE = user;
   $('auth').classList.add('hidden');
   ['main', 'tabbar', 'accBtn'].forEach(id => $(id).classList.remove('hidden'));
-  $('fab').classList.toggle('hidden', !$('v-cal').classList.contains('on'));
   busy(true);
   try {
     S = await api('carica'); render();
@@ -981,7 +1183,7 @@ const MOCK = (() => {
       { id: 'c2', nome: 'Luca Bianchi', tel: '', tariffa: 15, prec: 0, saldoIniz: 0, colore: '#eb6834', attivo: true, note: '' },
       { id: 'c3', nome: 'Anna Verdi', tel: '', tariffa: 15, prec: 0, saldoIniz: 120, colore: '#1baf7a', attivo: true, note: '' },
       { id: 'c4', nome: 'Nicola Natale', tel: '', tariffa: 15, prec: 9, saldoIniz: 0, colore: '#4a3aa7', attivo: true, note: '' } ],
-    lezioni: [], pagamenti: [], tariffaDefault: 15, url: '' };
+    lezioni: [], pagamenti: [], schede: [], esercizi: [], tariffaDefault: 15, url: '' };
   const t = new Date(), sch = 'Riscaldamento 10\' cyclette\nSquat 4x8\nAffondi 3x10 per gamba\nPlank 3x40"';
   let k = 0;
   for (let i = -40; i <= 0; i++) {
@@ -1010,7 +1212,12 @@ const MOCK = (() => {
     },
     eliminaLezione: id => { db.lezioni = db.lezioni.filter(l => l.id !== id); return out(); },
     salvaPagamento: p => { if (!p.id) p.id = nid(); up(db.pagamenti, p); return out(); },
-    eliminaPagamento: id => { db.pagamenti = db.pagamenti.filter(p => p.id !== id); return out(); }
+    eliminaPagamento: id => { db.pagamenti = db.pagamenti.filter(p => p.id !== id); return out(); },
+    salvaScheda: sc => { up(db.schede, Object.assign({}, sc, { modificata: new Date().toISOString() })); return out(); },
+    eliminaScheda: id => { db.schede = db.schede.filter(x => x.id !== id); db.lezioni.forEach(l => { if (l.scheda_id === id) l.scheda_id = null; }); return out(); },
+    salvaEsercizio: (e, file, via) => { const id = e.id || nid(), prima = db.esercizi.find(x => x.id === id);
+      up(db.esercizi, Object.assign({}, e, { id, foto: file ? null : (via ? null : prima && prima.foto) })); return out(); },
+    eliminaEsercizio: id => { db.esercizi = db.esercizi.filter(x => x.id !== id); return out(); }
   };
 })();
 
@@ -1028,5 +1235,6 @@ if ('serviceWorker' in navigator && !DEMO && location.protocol === 'https:') nav
   if (data.session) avvia(data.session.user); else mostraAuth('accedi');
 })();
 </script>
+<script src="schede.js"></script>
 </body>
 </html>
