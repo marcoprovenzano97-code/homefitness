@@ -62,9 +62,10 @@ function renderMie() {
     return '<div class="card sc-card" data-id="' + s.id + '"><div class="bar" style="background:' + (c ? esc(c.colore) : 'var(--grid)') + '"></div><div class="main">' +
       '<div class="t"><span>' + esc(s.nome) + '</span><span class="hint">' + contaEs(s) + ' esercizi</span></div>' +
       '<div class="s">' + (c ? esc(c.nome) + ' · ' : '') + 'modificata il ' + fmtD((s.modificata || '').slice(0, 10) || '2000-01-01') + '</div>' +
-      '<div class="minis">' + prime + '</div></div></div>';
+      '<div class="minis">' + prime + '<button class="btn small ghost sc-pdf" data-pdf="' + s.id + '" aria-label="Scarica il PDF di ' + esc(s.nome) + '">📄 PDF</button></div></div></div>';
   }).join('') : '<div class="empty">Nessuna scheda. Creane una con “+ Nuova scheda”: scegli gli esercizi dal glossario e imposta serie, ripetizioni e recupero.</div>';
   $('scList').querySelectorAll('.card').forEach(el => el.onclick = () => vediScheda(el.dataset.id));
+  $('scList').querySelectorAll('[data-pdf]').forEach(b => b.onclick = ev => { ev.stopPropagation(); pdfScheda(S.schede.find(x => x.id === b.dataset.pdf)); });
   firmaImg($('scList'));
 }
 
@@ -195,12 +196,14 @@ function vediScheda(id, daLezione) {
   const c = s.cliente ? cli(s.cliente) : null;
   const html = '<h3>' + esc(s.nome) + '</h3><p class="hint" style="margin:-8px 0 12px">' + (c ? esc(c.nome) + ' · ' : '') + contaEs(s) + ' esercizi</p>' +
     htmlBlocchi(s) + (s.note ? '<div class="f" style="margin-top:10px"><label>Note</label><div style="white-space:pre-wrap">' + esc(s.note) + '</div></div>' : '') +
-    '<div class="actions wrapbtn"><button class="btn ghost" id="sPrint">🖨️ Stampa / PDF</button><button class="btn ghost" id="sShare">📤 Condividi</button>' +
-    (daLezione ? '' : '<button class="btn ghost" id="sDup">Duplica</button>') + '<button class="btn" id="sMod">Modifica</button></div>';
+    '<button class="btn" id="sPdf" style="width:100%;padding:12px;margin-top:6px">📄 Scarica PDF</button>' +
+    '<div class="actions wrapbtn"><button class="btn ghost" id="sPrint">🖨️ Stampa</button><button class="btn ghost" id="sShare">📤 Condividi testo</button>' +
+    (daLezione ? '' : '<button class="btn ghost" id="sDup">Duplica</button>') + '<button class="btn ghost" id="sMod">Modifica</button></div>';
   (daLezione ? apri2 : apri)(html);
   firmaImg($(daLezione ? 'sheet2' : 'sheet'));
   $('sMod').onclick = () => { if (daLezione) chiudi2(); editorScheda(s); };
   $('sPrint').onclick = () => stampaScheda(s);
+  $('sPdf').onclick = () => pdfScheda(s);
   $('sShare').onclick = () => condividi(testoScheda(s), s.nome);
   if ($('sDup')) $('sDup').onclick = () => editorScheda(Object.assign(JSON.parse(JSON.stringify(s)), { id: null, nome: s.nome + ' (copia)' }));
 }
@@ -223,6 +226,128 @@ async function stampaScheda(s) {
     await Promise.race([caricate, new Promise(r => setTimeout(r, 5000))]);
   } finally { busy(false); }
   window.print();
+}
+
+// ---------- PDF vero (file da salvare o mandare), anche dal telefono ----------
+let jspdfPronto = null;
+function caricaJsPDF() {
+  if (window.jspdf) return Promise.resolve();
+  return jspdfPronto || (jspdfPronto = new Promise((ok, ko) => {
+    const sc = document.createElement('script'); sc.src = 'vendor/jspdf.umd.min.js';
+    sc.onload = ok; sc.onerror = () => { jspdfPronto = null; ko(new Error('Impossibile preparare il PDF: controlla la connessione')); };
+    document.head.appendChild(sc);
+  }));
+}
+/** Foto dell'esercizio ritagliata 3:2 come JPEG (dataURL); il disegno se la foto manca. */
+async function fotoPerPdf(e) {
+  let src;
+  if (e && e.fotoMia && sb) {
+    const u = urlFirmati[e.fotoMia];
+    if (u && u.scade > Date.now()) src = u.url;
+    else { const r = await sb.storage.from('schede').createSignedUrl(e.fotoMia, 600); src = r.data && r.data.signedUrl; }
+  } else if (e && e.foto) src = 'esercizi/' + e.foto + '-0.jpg';
+  if (!src) {
+    const svg = ICONE_SEZ[(e && e.sez) || 'forza'].replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" ').replace(/currentColor/g, '#2a78d6');
+    src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+  return new Promise(ok => {
+    const img = new Image(); img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const cv = document.createElement('canvas'); cv.width = 360; cv.height = 240;
+      const g = cv.getContext('2d'); g.fillStyle = src.startsWith('data:image/svg') ? '#eef4fc' : '#ffffff'; g.fillRect(0, 0, 360, 240);
+      if (src.startsWith('data:image/svg')) g.drawImage(img, 120, 60, 120, 120);
+      else { const k = Math.max(360 / img.width, 240 / img.height), w = img.width * k, h = img.height * k; g.drawImage(img, (360 - w) / 2, (240 - h) / 2, w, h); }
+      try { ok(cv.toDataURL('image/jpeg', 0.82)); } catch (err) { ok(null); }
+    };
+    img.onerror = () => ok(null);
+    img.src = src;
+  });
+}
+const pdfTxt = t => String(t == null ? '' : t).replace(/[’‘]/g, "'").replace(/[“”]/g, '"').replace(/[–—]/g, '-').replace(/•/g, '-').replace(/…/g, '...');
+
+async function pdfScheda(s) {
+  busy(true);
+  try {
+    await caricaJsPDF();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const W = 210, H = 297, M = 14, BLU = [42, 120, 214], GRIGIO = [95, 94, 90];
+    const c = s.cliente ? cli(s.cliente) : null, oggi = new Date();
+    const data = pad(oggi.getDate()) + '/' + pad(oggi.getMonth() + 1) + '/' + oggi.getFullYear();
+    // intestazione
+    const logo = await new Promise(ok => { const i = new Image(); i.onload = () => { const cv = document.createElement('canvas'); cv.width = cv.height = 192; cv.getContext('2d').drawImage(i, 0, 0); ok(cv.toDataURL('image/png')); }; i.onerror = () => ok(null); i.src = 'icons/icon-192.png'; });
+    if (logo) doc.addImage(logo, 'PNG', M, M - 2, 13, 13);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(20, 20, 20);
+    doc.text(pdfTxt(s.nome), M + 17, M + 4.5);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...GRIGIO);
+    doc.text(pdfTxt((c ? c.nome + '  ·  ' : '') + data + '  ·  ' + contaEs(s) + ' esercizi'), M + 17, M + 10);
+    doc.setDrawColor(...BLU); doc.setLineWidth(0.8); doc.line(M, M + 14, W - M, M + 14);
+    let y = M + 22;
+    const fineRiga = H - 16;
+    const titoloBlocco = (nome, cont) => {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(...BLU);
+      doc.text(pdfTxt(nome.toUpperCase() + (cont ? '  (continua)' : '')), M, y);
+      doc.setDrawColor(220, 224, 230); doc.setLineWidth(0.3); doc.line(M, y + 1.8, W - M, y + 1.8);
+      y += 6;
+    };
+    for (const b of BLOCCHI) {
+      const its = s.blocchi[b.id] || [];
+      if (!its.length) continue;
+      if (y + 30 > fineRiga) { doc.addPage(); y = M + 6; }
+      titoloBlocco(b.nome);
+      for (let i = 0; i < its.length; i++) {
+        const it = its[i], e = trovaEs(it.es);
+        const dati = [it.serie ? 'Serie ' + it.serie : '', it.rip ? 'Ripetizioni ' + it.rip : '', it.rec ? 'Recupero ' + it.rec : '', it.carico ? 'Carico ' + it.carico : ''].filter(Boolean).join('   ·   ');
+        const tx = M + 38, tw = W - M - tx;
+        doc.setFontSize(9.5); doc.setFont('helvetica', 'italic');
+        const note = it.note ? doc.splitTextToSize(pdfTxt(it.note), tw) : [];
+        doc.setFont('helvetica', 'normal');
+        const esec = e && e.desc ? doc.splitTextToSize(pdfTxt(e.desc), tw).slice(0, 2) : [];
+        const hRiga = Math.max(24, 7 + 5 + esec.length * 4 + note.length * 4 + 3);
+        if (y + hRiga > fineRiga) { doc.addPage(); y = M + 6; titoloBlocco(b.nome, true); }
+        const foto = await fotoPerPdf(e || { sez: 'forza' });
+        if (foto) { doc.addImage(foto, 'JPEG', M, y, 33, 22); doc.setDrawColor(230, 230, 230); doc.setLineWidth(0.2); doc.rect(M, y, 33, 22); }
+        let ty = y + 4.5;
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(11.5); doc.setTextColor(20, 20, 20);
+        doc.text(pdfTxt((i + 1) + '. ' + nomeItem(it)), tx, ty); ty += 5.5;
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(...BLU);
+        if (dati) { doc.text(pdfTxt(dati), tx, ty); ty += 5; }
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(...GRIGIO);
+        esec.forEach(r => { doc.text(r, tx, ty); ty += 4; });
+        doc.setFont('helvetica', 'italic'); doc.setFontSize(9.5); doc.setTextColor(60, 60, 60);
+        note.forEach(r => { doc.text(r, tx, ty); ty += 4; });
+        y += hRiga;
+        doc.setDrawColor(235, 235, 235); doc.setLineWidth(0.2); doc.line(M, y - 1.5, W - M, y - 1.5);
+      }
+      y += 4;
+    }
+    if (s.note) {
+      doc.setFontSize(10); doc.setFont('helvetica', 'normal');
+      const r = doc.splitTextToSize(pdfTxt(s.note), W - 2 * M);
+      if (y + 8 + r.length * 4.5 > fineRiga) { doc.addPage(); y = M + 6; }
+      doc.setFont('helvetica', 'bold'); doc.setTextColor(20, 20, 20); doc.text('Note', M, y); y += 5;
+      doc.setFont('helvetica', 'normal'); doc.setTextColor(60, 60, 60); doc.text(r, M, y);
+    }
+    // piè di pagina
+    const n = doc.getNumberOfPages();
+    for (let p = 1; p <= n; p++) {
+      doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(150, 150, 150);
+      doc.text('HomeFitness', M, H - 8);
+      doc.text('Pagina ' + p + ' di ' + n, W - M, H - 8, { align: 'right' });
+    }
+    const nomeFile = ('Scheda - ' + s.nome + (c ? ' - ' + c.nome : '')).replace(/[\\/:*?"<>|]+/g, '').trim() + '.pdf';
+    const file = new File([doc.output('blob')], nomeFile, { type: 'application/pdf' });
+    busy(false);
+    // sul telefono: menu "Condividi" (salva in File, WhatsApp, email…); sul PC: scarica
+    if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: s.nome }); return; }
+      catch (err) { if (err && err.name === 'AbortError') return; }
+    }
+    doc.save(nomeFile);
+    toast('PDF scaricato ✓');
+  } catch (err) {
+    toast((err && err.message) || 'Errore nel creare il PDF', true);
+  } finally { busy(false); }
 }
 
 // ---------- composizione ----------

@@ -1,5 +1,5 @@
 // Service worker: rende l'app installabile e la apre anche con rete scarsa. Aumentare VERSION a ogni rilascio.
-const VERSION = 'hf-v3';
+const VERSION = 'hf-v4';
 const FILES = ['./', 'index.html', 'config.js', 'esercizi.js', 'schede.js', 'dashboard.js', 'vendor/supabase.min.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', e => {
