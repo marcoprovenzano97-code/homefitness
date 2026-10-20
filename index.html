@@ -90,6 +90,7 @@ button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit
 body.desk .wrap{max-width:none;padding:12px 24px 24px;}
 body.desk #v-cli, body.desk #v-conto{max-width:900px;margin:0 auto;}
 body.desk #v-schede{max-width:1200px;margin:0 auto;}
+body.desk #v-home{max-width:1100px;margin:0 auto;}
 body.desk .cal-head{display:flex;align-items:center;justify-content:space-between;gap:16px;}
 body.desk .cal-head .cal-nav{margin:0;justify-content:flex-start;}
 body.desk .cal-head .month-sum{margin:0;min-width:420px;}
@@ -235,6 +236,55 @@ table.tab{width:100%;border-collapse:collapse;background:var(--surface-1);border
 .loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--page) 70%, transparent);z-index:500;}
 .loading div{width:34px;height:34px;border:3px solid var(--grid);border-top-color:var(--accent);border-radius:50%;animation:sp 0.8s linear infinite;}
 @keyframes sp{to{transform:rotate(360deg)}}
+/* home: resoconto atleta */
+.dh-top{display:flex;align-items:center;gap:10px;margin:6px 0 14px;}
+.dh-lab{font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em;}
+.dh-sel{flex:1;max-width:420px;border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--surface-1);font-size:16px;font-weight:600;}
+.dh-head{display:flex;gap:12px;align-items:center;margin-bottom:12px;}
+.dh-head h2{font-size:21px;}
+.dh-head a{color:var(--accent);}
+.dh-dot{width:14px;height:44px;border-radius:7px;flex:none;}
+.dh-kpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;}
+@media (max-width:700px){ .dh-kpi{grid-template-columns:repeat(2,minmax(0,1fr));} }
+.dh-kpi .kpi b{font-size:20px;}
+.dh-kpi .kpi em{display:block;font-style:normal;font-size:12px;color:var(--text-muted);margin-top:1px;}
+.dh-kpi .kpi b.neg{color:var(--bad);} .dh-kpi .kpi b.pos{color:var(--good);}
+.dh-kpi .kpi > span:last-child:not(:first-child){display:block;font-size:12px;color:var(--text-muted);text-transform:none;letter-spacing:0;font-weight:500;}
+.dh-azioni{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px;}
+.dh-azioni .btn{flex:1 1 auto;}
+.dh-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px;}
+@media (min-width:900px){ .dh-grid{grid-template-columns:1fr 1fr;} .dh-largo{grid-column:1/-1;} }
+.dh-box{background:var(--surface-1);border:1px solid var(--border);border-radius:14px;padding:12px 14px;min-width:0;}
+.dh-box h3{font-size:14.5px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;}
+.dh-chart{position:relative;}
+.dh-chart svg{width:100%;height:auto;display:block;}
+.dh-chart .gl{stroke:var(--grid);stroke-width:1;}
+.dh-chart .gl.base{stroke:var(--text-muted);}
+.dh-chart .ax{fill:var(--text-muted);font-size:11px;}
+.dh-chart .bar{fill:var(--accent);}
+.dh-chart .hit{fill:transparent;cursor:pointer;}
+.dh-chart .hit.sel{fill:color-mix(in srgb, var(--accent) 8%, transparent);}
+.dh-tip{position:absolute;top:0;width:110px;background:var(--text-primary);color:var(--page);border-radius:8px;padding:6px 9px;font-size:12.5px;line-height:1.3;
+  pointer-events:none;opacity:0;transition:opacity .12s;text-align:center;}
+.dh-tip.on{opacity:1;}
+.dh-tip b{font-size:15px;} .dh-tip span{opacity:.8;}
+.dh-riga{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;border:none;background:none;padding:8px 0;border-bottom:1px solid var(--grid);cursor:pointer;font-size:14px;color:var(--text-primary);}
+.dh-riga:last-child{border-bottom:none;}
+.dh-riga.statica{cursor:default;}
+.dh-riga small{display:block;font-size:12px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px;}
+.dh-riga .pos{color:var(--good);font-weight:600;}
+.dh-pross{font-style:normal;font-size:11px;color:var(--accent);border:1px solid var(--accent);border-radius:5px;padding:0 4px;}
+.dh-sez{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px;}
+.dh-sez div{background:var(--page);border-radius:9px;padding:7px 9px;font-size:12px;color:var(--text-secondary);}
+.dh-sez b{display:block;font-size:16px;color:var(--text-primary);}
+.dh-sez i{display:block;height:4px;border-radius:2px;margin-top:5px;background:linear-gradient(90deg, var(--accent) var(--p), var(--grid) var(--p));}
+.dh-es{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:13.5px;}
+.dh-es span:nth-child(2){flex:1;min-width:0;}
+.dh-es .sv-img{width:54px;height:36px;}
+.dh-conto{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.dh-conto div{background:var(--page);border-radius:9px;padding:7px 10px;font-size:12px;color:var(--text-secondary);}
+.dh-conto b{display:block;font-size:16px;color:var(--text-primary);}
+
 /* schede e glossario */
 .seg-full{display:flex;width:100%;}
 .seg-full button{flex:1;padding:9px 6px;}
@@ -349,8 +399,17 @@ textarea.incolla{width:100%;min-height:140px;border:1px solid var(--border);bord
 </div>
 
 <div class="wrap hidden" id="main">
+  <!-- HOME: resoconto dell'atleta -->
+  <section class="view on" id="v-home">
+    <div class="dh-top">
+      <label for="dhSel" class="dh-lab">Atleta</label>
+      <select id="dhSel" class="dh-sel"></select>
+    </div>
+    <div id="dhBody"></div>
+  </section>
+
   <!-- CALENDARIO -->
-  <section class="view on" id="v-cal">
+  <section class="view" id="v-cal">
     <div class="cal-head">
       <div class="cal-nav">
         <button id="calPrev" aria-label="Precedente">‹</button>
@@ -402,7 +461,8 @@ textarea.incolla{width:100%;min-height:140px;border:1px solid var(--border);bord
 <button class="fab hidden" id="fab" title="Segna lezione" aria-label="Segna lezione">+</button>
 
 <nav class="tabbar hidden" id="tabbar">
-  <button data-v="cal" class="on"><span class="ic">📅</span>Calendario</button>
+  <button data-v="home" class="on"><span class="ic">🏠</span>Home</button>
+  <button data-v="cal"><span class="ic">📅</span>Calendario</button>
   <button data-v="cli"><span class="ic">👥</span>Clienti</button>
   <button data-v="schede"><span class="ic">📋</span>Schede</button>
   <button data-v="conto"><span class="ic">💶</span>Contabilità</button>
@@ -510,7 +570,7 @@ const iniziali = n => n.trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).
 
 // ---------- render ----------
 function render() {
-  renderCal(); renderCli(); renderConto(); if (typeof renderSchede === 'function') renderSchede();
+  renderCal(); renderCli(); renderConto(); if (typeof renderSchede === 'function') renderSchede(); if (typeof renderHome === 'function') renderHome();
   $('foot').innerHTML = DEMO ? 'Anteprima con dati di prova' : 'HomeFitness · ' + esc(UTENTE ? UTENTE.email : '');
 }
 
@@ -905,6 +965,7 @@ function formPagamento(p, cid) {
 document.querySelectorAll('.tabbar button').forEach(b => b.onclick = () => {
   document.querySelectorAll('.tabbar button').forEach(x => x.classList.toggle('on', x === b));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'v-' + b.dataset.v));
+  if (b.dataset.v === 'home' && typeof renderHome === 'function') renderHome();
   window.scrollTo(0, 0);
 });
 $('calPrev').onclick = () => spostaCal(-1);
@@ -1193,6 +1254,11 @@ const MOCK = (() => {
     if (g === 2 || (g === 5 && i % 2)) db.lezioni.push({ id: 'l' + (k++), d: iso(d), ora: '07:00', cliente: 'c2', importo: 15, scheda: 'Circuito full body 4 giri', allegati: [], note: '', ins: k });
     if (g === 3 && i > -20) db.lezioni.push({ id: 'l' + (k++), d: iso(d), ora: '', cliente: 'c3', importo: 15, scheda: '', allegati: [], note: '', ins: k });
   }
+  db.schede.push({ id: 'sA', nome: 'Forza A – gambe', cliente: 'c1', note: '', modificata: new Date().toISOString(), blocchi: {
+    riscaldamento: [{ es: 'circonduzioni-anca', serie: '1', rip: '10', rec: '' }, { es: 'knee-to-wall', serie: '1', rip: '10', rec: '' }],
+    centrale: [{ es: 'goblet-squat', serie: '3', rip: '10', rec: '90"' }, { es: 'stacco-rumeno', serie: '3', rip: '8', rec: '90"' }, { es: 'plank', serie: '3', rip: '30"', rec: '45"' }, { es: 'pallof', serie: '3', rip: '10', rec: '45"' }],
+    defaticamento: [{ es: 'flessori-ginocchio', serie: '1', rip: '30"', rec: '' }] } });
+  db.lezioni.forEach(l => { if (l.cliente === 'c1') l.scheda_id = 'sA'; });
   const d1 = new Date(t); d1.setDate(t.getDate() - 30);
   db.pagamenti.push({ id: 'p1', d: iso(d1), cliente: 'c1', importo: 150, metodo: 'Contanti', note: 'pacchetto 10' });
   db.pagamenti.push({ id: 'p2', d: iso(t), cliente: 'c2', importo: 60, metodo: 'Satispay', note: '' });
@@ -1236,5 +1302,6 @@ if ('serviceWorker' in navigator && !DEMO && location.protocol === 'https:') nav
 })();
 </script>
 <script src="schede.js"></script>
+<script src="dashboard.js"></script>
 </body>
 </html>
